@@ -14,6 +14,8 @@ arm-none-eabi-gcc -c -mcpu=arm926ej-s -g t.c -o t.o
 # A: ld is a linker that links multiple object files into a single binary executable.
 # The output of the linker on a standard Unix based system is an elf file
 # The elf file contains the compiled binary, but is not yet executable.
+arm-none-eabi-ld -T t.ld ts.o t.o /usr/lib/arm-none-eabi/lib/libc.a -o t.elf
+
 
 # 4. What does the following statement do?
 # A: objcopy copies the binary contents of the elf file to an executable binary file
