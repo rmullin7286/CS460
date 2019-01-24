@@ -26,6 +26,6 @@ rm *.o *.elf
 echo ready to go?
 read dummy
 
-qemu-system-arm -M versatilepb -m 128M -kernel t.bin \
--serial mon:stdio
+qemu-system-arm -M realview-pbx-a9 -m 128M -kernel t.bin \
+-serial mon:stdio -serial /dev/pts/1 -serial /dev/pts/2 -serial /dev/pts/3
  

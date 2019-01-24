@@ -86,7 +86,7 @@ void uprintu(UART * up, uint32_t x)
 	uprintu_base(up, x, "", 16);
 }
 
-void fuprintf(UART * up, char * fmt, ...)
+void uprintf(UART * up, char * fmt, ...)
 {
 	va_list args;
 	va_start(args, fmt);

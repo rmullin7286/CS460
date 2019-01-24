@@ -103,7 +103,7 @@ int main()
     int i;
     int size = sizeof(int);
     char string[32]; 
-    char line[128]; 
+    char line[128];
 
     N = 10;
 
@@ -111,9 +111,9 @@ int main()
   
 	for(i = 0; i < 4; i++)
 	{
-		fuprintf(uart + i, "enter a line from this UART : ");
-		ugets(uart + i, string);
-		fuprintf(uart + i, "    ECHO %s\n", string);
+		uprints(&uart[i], "enter a line from this UART : ");
+		ugets(&uart[i], string);
+		fuprintf(&uart[i], "    ECHO %s\n", string);
 	}
 
 
