@@ -363,9 +363,9 @@ int show_bmp(UART * up, char *p, int startRow, int startCol)
    r2 = 4*((3*w+3)/4);     // row size is a multiple of 4 bytes  
    p += (h-1)*r2;
 
-   for (i=startRow; i<(h >> 1)+startRow; i += 1){
+   for (i=startRow; i<(h / 2)+startRow; i += 1){
      pp = p;
-     for (j=startCol; j<startCol+(w >> 1); j+=1){
+     for (j=startCol; j<startCol+(w / 2); j+=1){
          b = *pp; g = *(pp+1); r = *(pp+2);
          pixel = (b<<16) + (g<<8) + r;
 	 fb[i*640 + j] = pixel;
