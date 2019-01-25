@@ -95,6 +95,11 @@ void fuprintf(UART * up, char * fmt, ...)
 				case 'd': uprintd(up, va_arg(args, uint32_t));
 			}
 		}
+		else
+		{
+			uputc(up, *fmt);
+		}
+		
 	}
 }
 

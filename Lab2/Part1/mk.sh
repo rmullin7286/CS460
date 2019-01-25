@@ -14,7 +14,7 @@ arm-none-eabi-gcc -c -mcpu=arm926ej-s -g t.c -o t.o
 # A: ld is a linker that links multiple object files into a single binary executable.
 # The output of the linker on a standard Unix based system is an elf file
 # The elf file contains the compiled binary, but is not yet executable.
-arm-none-eabi-ld -T t.ld ts.o t.o /usr/lib/arm-none-eabi/lib/libc.a /usr/lib/gcc/arm-none-eabi/5.4.1/libgcc.a -o t.elf
+arm-none-eabi-ld -T t.ld ts.o t.o /usr/lib/arm-none-eabi/lib/libc.a /usr/lib/gcc/arm-none-eabi/6.3.1/libgcc.a -o t.elf
 
 
 # 4. What does the following statement do?
