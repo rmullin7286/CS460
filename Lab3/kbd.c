@@ -85,7 +85,11 @@ void kbd_handler()
   }
   
   if (release && scode){    // next scan code following key release
-     release = 0;           // clear flag 
+     release = 0;           // clear flag
+     if (scode == 0x12)
+	    shifted = 0;
+     else if(scode == 0x14)
+	    control = 0; 
      return;
   }
 
@@ -105,7 +109,14 @@ void kbd_handler()
 
   if (control)
   {
-     printf("^%c", utab[scode]);
+     printf("c=%x ^%c\n", utab[scode], utab[scode]);
+     if(utab[scode] == 'D')
+     {
+	     kp->buf[kp->head++] = 0x04;
+	     kp->head %= 128;
+	     kp->data++; kp->room--;
+     } 
+     return;
   }
 
   if (!shifted)            
