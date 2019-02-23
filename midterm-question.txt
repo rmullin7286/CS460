@@ -1,0 +1,18 @@
+(1) kgetc will sleep the current process. If P0 is slept, and all other process are slept, there are no processes left to wake up the other processes.
+
+(2) 6: Call kgetc
+    5: when theres no data, sleep here
+	1: interrupt happens, jump to vector table. Vector Table sets PC to irq_handler_addr
+	2: irq_handler subtracts 4 from the link register. saves registers. Calls IRQ_handler
+	3: IRQ_handler runs, calls kbd_handler
+	4: kbd_handler runs, calls wakeup
+	5: wake up again, run kgetc, now that we have data we can continue. Data is read and kgetc ends
+	
+	
+(3) kgetc will sleep the current process. The next process now runs and also calls kgetc. 
+Because the sleep list is a queue, aka first in first out, the first process to sleep will
+get invoked, meaning the first process will read. Then, the next process gets called,
+and there's no data left, so the next process doesn't read anything. This will continue until
+a full line is read in the first process.
+
+(4) Because if the interrupt handler is slept, then there is nothing to wake up the main process, and the processes sleep forever. 
