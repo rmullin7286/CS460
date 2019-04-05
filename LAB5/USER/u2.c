@@ -2,5 +2,5 @@
 
 int main()
 {
-  ubody("two");
+  ubody("u2");
 }

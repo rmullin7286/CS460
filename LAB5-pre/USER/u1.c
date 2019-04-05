@@ -2,6 +2,6 @@
 
 int main()
 {
-  ubody("u1");
+  ubody("one");
 }
  

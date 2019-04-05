@@ -18,7 +18,6 @@ int ubody(char *name)
   ppid = getppid();
 
   while(1){
-	printf("RUNNING IMAGE %s\n", name);
     printf("This is process #%d in Umode at %x parent=%d\n", pid, getPA(),ppid);
     umenu();
     printf("input a command : ");
@@ -43,12 +42,8 @@ int ubody(char *name)
 	   uwakeup();
 	if (strcmp(line, "wait") == 0)
 	   uwait();
-	if (strcmp(line, "kfork") == 0)
-	   ukfork();
 	if (strcmp(line, "fork") == 0)
-		ufork();
-	if (strcmp(line, "exec") == 0)
-		uexec();
+	   ufork();
 	if (strcmp(line, "exit") == 0)
 	   uexit();
   }
@@ -56,9 +51,9 @@ int ubody(char *name)
 
 int umenu()
 {
-  uprintf("------------------------------------------------------------------\n");
-  uprintf("getpid getppid ps chname switch sleep wakeup wait kfork fork  exit\n");
-  uprintf("------------------------------------------------------------------\n");
+  uprintf("-----------------------------------------------------------\n");
+  uprintf("getpid getppid ps chname switch sleep wakeup wait fork exit\n");
+  uprintf("-----------------------------------------------------------\n");
 }
 
 int getpid()
@@ -139,7 +134,7 @@ int uwakeup()
 	return syscall(7, geti() ,0, 0);
 }
 
-int ukfork()
+int ufork()
 {
 	static const char * u1 = "u1";
 	return syscall(8, (int)u1, 0, 0);
@@ -147,19 +142,8 @@ int ukfork()
 
 int uexit()
 {
-	printf("Enter an exit status: ");
+	printf("Give an exit status: ");
 	return syscall(9, geti(), 0, 0);
 }
 
-int ufork()
-{
-	return syscall(10, 0, 0, 0);
-}
 
-int uexec()
-{
-	printf("Give a command string: ");
-	char command[300];
-	ugetline(command);
-	return syscall(11, (int)command, 0, 0);
-}

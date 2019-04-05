@@ -30,7 +30,6 @@ int color;
 #include "queue.c"
 #include "kernel.c"
 #include "fork.c"
-#include "exec.c"
 #include "svc.c"
 
 #include "sdc.c"
