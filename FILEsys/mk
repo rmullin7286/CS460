@@ -1,0 +1,2 @@
+cc -m32  main.c OBJ/*.o
+

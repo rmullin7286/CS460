@@ -1,0 +1,5 @@
+sudo dd if=/dev/zero of=disk bs=1024 count=1440
+sudo mkfs -b 1024 disk 1440
+sudo mount -o loop disk /mnt
+(cd /mnt; rm -r *; ls -l)
+sudo umount /mnt
