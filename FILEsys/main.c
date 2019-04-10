@@ -24,8 +24,9 @@ int  fd, dev;
 int  nblocks, ninodes, bmap, imap, inode_start;
 char pathname[256], parameter[256];
 
-// #include "util.c"
+#include "util.c"
 MINODE *iget();
+
 /*
 #include "alloc_dealloc.c"
 #include "cd_ls_pwd.c"
@@ -35,12 +36,12 @@ MINODE *iget();
 #include "link.c"
 #include "unlink.c"
 */
-/*
-#include "open_close.c"
-#include "read.c"
-#include "write.c"
-#include "cp_mv.c"
-*/
+
+//#include "open_close.c"
+//#include "read.c"
+//#include "write.c"
+//#include "cp_mv.c"
+
 
 int init()
 {
