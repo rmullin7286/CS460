@@ -249,3 +249,150 @@ int findino(MINODE *mip, u32 *myino)
   dp = (DIR *)cp;
   return dp->inode;
 }
+
+int tst_bit(char * buf, int bit)
+{
+    return buf[bit/8] & (1 << (bit%8));
+}
+
+void set_bit(char * buf, int bit)
+{
+    buf[bit/8] |= (1 << (bit%8));
+}
+
+void clr_bit(char * buf, int bit)
+{
+    buf[bit/8] &= ~(1 << (bit%8));
+}
+
+int decFreeInodes(int dev)
+{
+    char buf[BLKSIZE];
+    get_block(dev, 1, buf);
+    ((SUPER*)buf)->s_free_inodes_count--;
+    put_block(dev, 1, buf);
+
+    get_block(dev, 2, buf);
+    ((GD*)buf)->bg_free_inodes_count--;
+    put_block(dev, 2, buf);
+}
+
+int incFreeInodes(int dev)
+{
+    char buf[BLKSIZE];
+    // increment free inodes count in SUPER and GD
+    get_block(dev, 1, buf);
+    ((SUPER *)buf)->s_free_inodes_count++;
+    put_block(dev, 1, buf);
+
+    get_block(dev, 2, buf);
+    ((GD *)buf)->bg_free_inodes_count++;
+    put_block(dev, 2, buf);
+}
+
+int ialloc(int dev)
+{
+    char buf[BLKSIZE];
+    get_block(dev, imap, buf);
+    for(int i = 0; i < ninodes; i++)
+        if(tst_bit(buf, i) == 0)
+        {
+            set_bit(buf, i);
+            decFreeInodes(dev);
+            put_block(dev, imap, buf);
+            return i + 1;
+        }
+    return 0;
+}
+
+int balloc(int dev)
+{
+    char buf[BLKSIZE];
+    get_block(dev, bmap, buf);
+    for(int i = 0; i < nblocks; i++)
+    {
+        if(tst_bit(buf, i) == 0)
+        {
+            set_bit(buf, i);
+            decFreeInodes(dev);
+            put_block(dev, bmap, buf);
+            return i + 1;
+        }
+    }
+        
+    return 0;
+}
+
+void idalloc(int dev, int ino)
+{
+    char buf[BLKSIZE];
+    get_block(dev, imap, buf);
+    if(ino > ninodes)
+    {
+        printf("ERROR: inumber %d out of range.\n", ino);
+        return;
+    }
+    get_block(dev,imap,buf);
+    clr_bit(buf,ino-1);
+    put_block(dev,imap,buf);
+    incFreeInodes(dev);
+}
+
+void bdalloc(int dev, int bno)
+{
+    char buf[BLKSIZE];
+    if(bno > nblocks)
+    {
+        printf("ERROR: bnumber %d out of range.\n", bno);
+        return;
+    }
+    get_block(dev,bmap,buf);
+    clr_bit(buf,bno-1);
+    put_block(dev,bmap,buf);
+    incFreeInodes(dev);
+}
+
+void mytruncate(MINODE * mip)
+{
+    for(int i = 0; i < 12 && mip->inode.i_block[i]; i++)
+        bdalloc(mip->dev, mip->inode.i_block[i]);
+
+    uint32_t buf[256];
+    if(mip->inode.i_block[12] != 0)
+    {
+        get_block(mip->dev, mip->inode.i_block[12], (char*)buf);
+        for(int i = 0; i < 256 && buf[i] != 0; i++)
+            bdalloc(mip->dev, buf[i]);
+    }
+
+    if(mip->inode.i_block[13] != 0)
+    {
+        get_block(mip->dev, mip->inode.i_block[13], (char*)buf);  
+        for(int i = 0; i < 256 && buf[i] != 0; i++)
+        {
+            uint32_t buf2[256];
+            get_block(mip->dev, buf[i], (char*)buf2);
+            for(int j = 0; j < 256 && buf2[j] != 0; j++)
+            {
+                bdalloc(mip->dev, buf2[j]);
+            }
+
+            bdalloc(mip->dev, buf[i]);
+        }
+    }
+}
+
+void dbname(char *pathname)
+{
+    char temp[256];
+    strcpy(temp, pathname);
+    strcpy(dname, dirname(temp));
+    strcpy(temp, pathname);
+    strcpy(bname, basename(temp));
+}
+
+void zero_block(int dev, int blk)
+{
+    char buf[BLKSIZE];
+    memset(buf, 0, BLKSIZE);
+    put_block(dev, blk, buf);

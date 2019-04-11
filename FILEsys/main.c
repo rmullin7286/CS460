@@ -37,7 +37,7 @@ MINODE *iget();
 #include "unlink.c"
 */
 
-//#include "open_close.c"
+#include "open_close.c"
 //#include "read.c"
 //#include "write.c"
 //#include "cp_mv.c"
@@ -173,7 +173,7 @@ main(int argc, char *argv[ ])
       readlink(line);
       printf("symlink name = %s\n", line);
     }
-    /*******************************
+
     if (strcmp(cmd, "open")==0){
       open_file();
     }
@@ -188,6 +188,7 @@ main(int argc, char *argv[ ])
     if (strcmp(cmd, "pfd")==0){
       pfd();
     }
+/*
     if (strcmp(cmd, "read")==0){
       read_file();
     }
