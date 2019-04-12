@@ -11,19 +11,15 @@ enum FILEMODE
 
 int open_file()
 {
-    int mode;
-    char pathname[255];
-
-    if(strcmp(pathname, "R") == 0)
-        mode = R;
-    else if(strcmp(pathname, "W") == 0)
-        mode = W;
-    else if(strcmp(pathname, "RW") == 0)
-        mode = RW;
-    else if(strcmp(pathname, "APPEND") == 0)
-        mode = APPEND;
-    else
-        mode = -1;
+	int mode;
+	if(strcmp(parameter, "r") == 0)
+		mode = R;
+	else if(strcmp(parameter, "w") == 0)
+		mode = W;
+	else if(strcmp(parameter, "rw") == 0)
+		mode = RW;
+	else if(strcmp(parameter, "append") == 0)
+		mode = APPEND;
 
     int fd = myopen(pathname, mode);
     if(fd >= 0 && fd < 10)
@@ -53,7 +49,7 @@ int myopen(char * name, int mode)
     }
 
     for(int i = 0; i < NOFT; i++)
-        if(oft[i].mptr == mip && oft[i].mode != R)
+        if(oft[i].minodePtr == mip && oft[i].mode != R)
         {
             printf("File already open\n");
             return -1;
@@ -62,7 +58,7 @@ int myopen(char * name, int mode)
     for(int i = 0; i < NOFT; i++)
         if(oft[i].refCount == 0)
         {
-            oft[i] = (OFT){.mode = mode, .refCount = 1, .mptr = mip, .offset = (mode == APPEND ? mip->inode.i_size : 0)};
+            oft[i] = (OFT){.mode = mode, .refCount = 1, .minodePtr = mip, .offset = (mode == APPEND ? mip->inode.i_size : 0)};
             if(mode == W)
             {
                 mytruncate(mip);
@@ -89,18 +85,15 @@ void close_file(int fd)
     OFT *op = running->fd[fd];
     op->refCount--;
     if(op->refCount == 0)
-        iput(op->mptr);
+        iput(op->minodePtr);
 
-    oft[fd].mptr = NULL;
+    oft[fd].minodePtr = NULL;
     running->fd[fd] = NULL;
 }
 
 void myclose()
 {
-    printf("Enter fd to close: ");
-    int input;
-    scanf("%d", &input);
-    close_file(input);
+	close_file(atoi(pathname));
 }
 
 void lseek_file()
@@ -113,7 +106,7 @@ void lseek_file()
 void mylseek(int fd, int position)
 {
     int original = running->fd[fd]->offset;
-    running->fd[fd]->offset = (position <= running->fd[fd]->mptr->inode.i_size && position >= 0) ? position : original;
+    running->fd[fd]->offset = (position <= running->fd[fd]->minodePtr->inode.i_size && position >= 0) ? position : original;
 }
 
 int pfd()

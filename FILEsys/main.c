@@ -11,6 +11,7 @@
 
 #include "type.h"
 
+
 MINODE minode[NMINODE];
 MINODE *root;
 PROC   proc[NPROC], *running;
@@ -27,6 +28,7 @@ char pathname[256], parameter[256];
 #include "util.c"
 MINODE *iget();
 
+
 /*
 #include "alloc_dealloc.c"
 #include "cd_ls_pwd.c"
@@ -38,9 +40,9 @@ MINODE *iget();
 */
 
 #include "open_close.c"
-//#include "read.c"
-//#include "write.c"
-//#include "cp_mv.c"
+#include "read.c"
+#include "write.c"
+#include "cp_mv.c"
 
 
 int init()
@@ -81,7 +83,7 @@ int mount_root()
 }
 
 char *disk = "disk";
-main(int argc, char *argv[ ])
+int main(int argc, char *argv[ ])
 {
   int ino;
   char buf[BLKSIZE];
@@ -179,7 +181,8 @@ main(int argc, char *argv[ ])
     }
 
     if (strcmp(cmd, "close")==0){
-      close_file();
+	  printf("CLOSING FILE");
+      myclose();
     }
 
     if (strcmp(cmd, "lseek")==0){
@@ -188,7 +191,7 @@ main(int argc, char *argv[ ])
     if (strcmp(cmd, "pfd")==0){
       pfd();
     }
-/*
+
     if (strcmp(cmd, "read")==0){
       read_file();
     }
@@ -198,17 +201,16 @@ main(int argc, char *argv[ ])
     }
 
     if (strcmp(cmd, "cat")==0){
-      cat_file();
+      mycat();
     }
     if (strcmp(cmd, "cp")==0){
-      cp_file();
+      cp();
     }
 
 
     if (strcmp(cmd, "mv")==0){
-      mv_file();
+      mymov();
     }
-    ********************************/
 
     if (strcmp(cmd, "quit")==0)
        quit();
@@ -221,8 +223,10 @@ int quit()
   MINODE *mip;
   for (i=0; i<NMINODE; i++){
     mip = &minode[i];
-    if (mip->refCount > 0)
+    if (mip->refCount > 0) {
+	  mip->refCount = 1;
       iput(mip);
+	}
   }
   exit(0);
 }

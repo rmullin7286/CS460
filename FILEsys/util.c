@@ -87,8 +87,8 @@ MINODE *iget(int dev, int ino)
 
        get_block(dev, blk, buf);
        ip = (INODE *)buf + disp;
-       // copy INODE to mp->INODE
-       mip->INODE = *ip;
+       // copy INODE to mp->inode
+       mip->inode = *ip;
        return mip;
     }
   }   
@@ -101,12 +101,10 @@ iput(MINODE *mip)
  int i, block, offset;
  char buf[BLKSIZE];
  INODE *ip;
-
  if (mip==0) 
      return;
 
- mip->refCount--;
- 
+ mip->refCount--; 
  if (mip->refCount > 0) return;
  if (!mip->dirty)       return;
  
@@ -120,7 +118,7 @@ iput(MINODE *mip)
  get_block(mip->dev, block, buf);
 
  ip = (INODE *)buf + offset;
- *ip = mip->INODE;
+ *ip = mip->inode;
 
  put_block(mip->dev, block, buf);
 
@@ -134,7 +132,7 @@ int search(MINODE *mip, char *name)
    INODE *ip;
 
    printf("search for %s in MINODE = [%d, %d]\n", name,mip->dev,mip->ino);
-   ip = &(mip->INODE);
+   ip = &(mip->inode);
 
    /**********  search for a file name ***************/
    for (i=0; i<12; i++){ /* search direct blocks only */
@@ -211,10 +209,10 @@ int findmyname(MINODE *parent, u32 myino, char *myname)
 
  /**********  search for a file name ***************/
  for (i=0; i<12; i++){ /* search direct blocks only */
-     if (mip->INODE.i_block[i] == 0) 
+     if (mip->inode.i_block[i] == 0) 
            return -1;
 
-     get_block(mip->dev, mip->INODE.i_block[i], buf);
+     get_block(mip->dev, mip->inode.i_block[i], buf);
      dp = (DIR *)buf;
      cp = buf;
 
@@ -241,7 +239,7 @@ int findino(MINODE *mip, u32 *myino)
   char buf[BLKSIZE], *cp;   
   DIR *dp;
 
-  get_block(mip->dev, mip->INODE.i_block[0], buf);
+  get_block(mip->dev, mip->inode.i_block[0], buf);
   cp = buf; 
   dp = (DIR *)buf;
   *myino = dp->inode;
@@ -382,17 +380,9 @@ void mytruncate(MINODE * mip)
     }
 }
 
-void dbname(char *pathname)
-{
-    char temp[256];
-    strcpy(temp, pathname);
-    strcpy(dname, dirname(temp));
-    strcpy(temp, pathname);
-    strcpy(bname, basename(temp));
-}
-
 void zero_block(int dev, int blk)
 {
     char buf[BLKSIZE];
     memset(buf, 0, BLKSIZE);
     put_block(dev, blk, buf);
+}

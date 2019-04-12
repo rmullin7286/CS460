@@ -24,7 +24,7 @@ DIR   *dp;
 #define NOFT       20
 
 typedef struct minode{
-  INODE INODE;
+  INODE inode;
   int dev, ino;
   int refCount;
   int dirty;
