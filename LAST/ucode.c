@@ -242,7 +242,6 @@ int unlink(char *file)
   return syscall(24, file, 0);
 }
 
-
 int symlink(char *oldfile, char *newfile)
 {
   return syscall(25, oldfile, newfile);
@@ -538,4 +537,13 @@ int strcasecmp(char *s1, char *s2)
   }
   //printf("t2=%s\n", t1, t2);
   return strcmp(t1, t2);
+}
+
+//my code
+int atoi(char * str)
+{
+  int res = 0;
+  for(int i = 0; str[i] != '\0'; ++i)
+    res = res * 10 + str[i] - '0';
+  return res;
 }
