@@ -9,7 +9,7 @@ int parent(int console)
         pid = wait(&status);
 		getc();
         if(pid == console)
-        {
+    	{
             printf("INIT: forks a new console login\n");
             console = fork();
             if (console)
@@ -28,7 +28,7 @@ int main(void)
     printf("INIT: fork a login proc on console\n");
     int console = fork();
     if(console)
-        parent;
+        parent(console);
     else
         exec("login /dev/tty0");
 }

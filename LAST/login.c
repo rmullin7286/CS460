@@ -1,14 +1,17 @@
 #include "ucode.c"
 
-char tokens[7];
+char *tokens[7];
 
 void get_tokens(char * line)
 {
     for(int i = 0; i < 7; i++)
     {
         tokens[i] = line;
-        while(*line != ':' || *line != '\0')
-            line++;
+        while(*line != ':' && *line != '\0')
+		{
+			printf("%c", *line);
+            ++line;
+		}
         *line = '\0';
         line++;
     }
@@ -34,7 +37,6 @@ int main(int argc, char * argv[])
         close(0);
     
         int pswd_file = open("/etc/passwd", O_RDONLY);
-        dup2(pswd_file, 0);
 
         char line[256];
         while(getline(line))

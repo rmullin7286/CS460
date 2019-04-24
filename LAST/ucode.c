@@ -509,6 +509,7 @@ int eatpath(char *line, char *name[ ])
   return n;
 }
 
+
 int strcasecmp(char *s1, char *s2)
 {
   char *cp;
