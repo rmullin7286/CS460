@@ -1,7 +1,7 @@
 # choose a right link library:
 
-LDLIB=/usr/lib/gcc/arm-none-eabi/4.9.3/libgcc.a   # for Ubuntu 10.15
-#LDLIB=/usr/lib/gcc/arm-none-eabi/6.3.1/libgcc.a    # for Ubuntu 18.04
+#LDLIB=/usr/lib/gcc/arm-none-eabi/4.9.3/libgcc.a   # for Ubuntu 10.15
+LDLIB=/usr/lib/gcc/arm-none-eabi/6.3.1/libgcc.a    # for Ubuntu 18.04
 
 if [ $# \< 1 ]; then
    echo "mk FILENAME (without .c)"

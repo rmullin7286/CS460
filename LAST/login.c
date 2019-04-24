@@ -14,7 +14,7 @@ void get_tokens(char * line)
     }
 }
 
-char name[50], password[50];
+char uname[50], password[50];
 
 int main(int argc, char * argv[])
 {
@@ -27,7 +27,7 @@ int main(int argc, char * argv[])
     fixtty(argv[1]);
     while(1)
     {
-        printf("login: "); gets(name);
+        printf("login: "); gets(uname);
         printf("password: "); gets(password);
         
         int in_copy = dup(in);
@@ -40,7 +40,7 @@ int main(int argc, char * argv[])
         while(getline(line))
         {
             get_tokens(line);
-            if(strcmp(tokens[0], name) == 0 && stcmp(tokens[1], password) == 0)
+            if(strcmp(tokens[0], uname) == 0 && strcmp(tokens[1], password) == 0)
             {
                 chuid(atoi(tokens[3]), atoi(tokens[2]));
                 chdir(tokens[5]);

@@ -7,6 +7,7 @@ int parent(int console)
         printf("INIT: wait for ZOMBIE child\n");
         int status;
         pid = wait(&status);
+		getc();
         if(pid == console)
         {
             printf("INIT: forks a new console login\n");
