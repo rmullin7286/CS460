@@ -37,8 +37,8 @@ int myopen(char * name, int mode)
     }
     if(!ino)
     {
-        printf("File does not exist\n");
-        return -1;
+            printf("File does not exist\n");
+            return -1;
     }
     
     MINODE * mip = iget(dev, ino);

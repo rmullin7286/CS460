@@ -1,9 +1,10 @@
 void cp()
 {
-    int fdsource = open_file(pathname, R);
+
+    int fdsource = myopen(pathname, R);
     char temp[strlen(parameter) + 1];
     strcpy(temp, parameter);
-    int fddest = open_file(parameter, W);
+    int fddest = myopen(parameter, W);
     char * buffer = malloc(sizeof(char) * running->fd[fdsource]->minodePtr->inode.i_size + 1);
     myread(fdsource, buffer, running->fd[fdsource]->minodePtr->inode.i_size);
     buffer[running->fd[fdsource]->minodePtr->inode.i_size] = 0;
