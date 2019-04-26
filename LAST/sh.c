@@ -26,16 +26,15 @@ void redirect(char * command)
 				char * filename = command + i + 2;
 				filename = leading_wspace(filename);
 				close(1);
-				open(filename, O_WRONLY|O_APPEND);
+				open(strtok(filename, ' '), O_WRONLY|O_APPEND);
 			}
 			else
 			{
 				command[i] = '\0';
 				char * filename = command + i + 1;
 				filename = leading_wspace(filename);
-				printf("REDIRECTING OUT");
 				close(1);
-				open(filename, O_WRONLY|O_CREAT);
+				open(strtok(filename, ' '), O_WRONLY|O_CREAT);
 			}
 		}
 		else if(command[i] == '<')
@@ -44,7 +43,7 @@ void redirect(char * command)
 			char * filename = command + i + 1;
 			filename = leading_wspace(filename);
 			close(0);
-			open(filename, O_RDONLY);
+			open(strtok(filename, ' '), O_RDONLY);
 		}
 	}
 
