@@ -32,6 +32,8 @@ int main(int argc, char * argv[])
     {
         printf("login: "); gets(uname);
         printf("password: "); gets(password);
+		uname[strlen(uname) - 1] = '\0';
+		password[strlen(password) - 1] = '\0';
         
         int in_copy = dup(in);
         close(0);
@@ -48,8 +50,8 @@ int main(int argc, char * argv[])
                 chdir(tokens[5]);
                 close(0);
                 dup2(in_copy, 0);
-                close(in_copy);
-                exec(tokens[6]);
+				printf(tokens[5]);
+                exec("sh");
             }
         }
 

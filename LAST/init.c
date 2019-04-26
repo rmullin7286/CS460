@@ -25,7 +25,7 @@ int main(void)
 {
     int in = open("/dev/tty0", O_RDONLY);
     int out = open("/dev/tty0", O_WRONLY);
-    printf("INIT: fork a login proc on console\n");
+    printf("INIT: fork a login proc on console");
     int console = fork();
     if(console)
         parent(console);

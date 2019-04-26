@@ -14,6 +14,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ********************************************************************/
 
+#define NULL 0
 
 typedef unsigned char   u8;
 typedef unsigned short u16;
@@ -549,3 +550,37 @@ int strcasecmp(char *s1, char *s2)
   return res;
 }
 */
+
+static char * save;
+
+//idk if this actually works yet
+char * strtok(char * s, char delim)
+{
+	if(s != NULL)
+		save = s;
+
+	else if(s == NULL)
+	    s = save;
+
+	if(*s == '\0')
+		return NULL;
+	
+	while(*s != '\0' && *s != delim)
+		s++;
+	
+	if(*s == '\0')
+	{
+		char * ret = save;
+		save = s;
+		return ret;
+	}
+	else
+	{
+		*s = '\0';
+		char * ret = save;
+		save = s + 1;
+		return ret;
+	}
+}
+
+
