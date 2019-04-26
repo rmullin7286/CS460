@@ -14,7 +14,10 @@ int main(int argc, char * argv[])
 	close(1);
 	open(argv[2], O_WRONLY|O_CREAT);
 	while(read(0, buffer, 1024))
+	{
+		buffer[strlen(buffer) - 1] = 0;
 		prints(buffer);
+	}
 
 	return 0;
 }

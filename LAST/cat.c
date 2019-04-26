@@ -11,7 +11,10 @@ int main(int argc, char * argv[])
 	}
 
 	while(read(0, buffer, 1024))
+	{
+		buffer[strlen(buffer) - 1] = 0;
 		prints(buffer);
+	}
 	
 	return 0;
 }
