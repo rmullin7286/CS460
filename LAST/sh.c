@@ -1,5 +1,12 @@
 #include "ucode.c"
 
+char * leading_wspace(char * s)
+{
+	while(*s == ' ')
+		s++;
+	return s;
+}
+
 void waitpid(int pid)
 {
 	int status;
@@ -16,14 +23,17 @@ void redirect(char * command)
 			if(i < len - 1 && command[i + 1] == '>')
 			{
 				command[i] = command[i + 1] = '\0';
-				char * filename = strtok(command + i + 2, ' ');
+				char * filename = command + i + 2;
+				filename = leading_wspace(filename);
 				close(1);
 				open(filename, O_WRONLY|O_APPEND);
 			}
 			else
 			{
 				command[i] = '\0';
-				char * filename = strtok(command + i + 1, ' ');
+				char * filename = command + i + 1;
+				filename = leading_wspace(filename);
+				printf("REDIRECTING OUT");
 				close(1);
 				open(filename, O_WRONLY|O_CREAT);
 			}
@@ -31,7 +41,8 @@ void redirect(char * command)
 		else if(command[i] == '<')
 		{
 			command[i] = '\0';
-			char * filename = strtok(command + i + 1, " ");
+			char * filename = command + i + 1;
+			filename = leading_wspace(filename);
 			close(0);
 			open(filename, O_RDONLY);
 		}
@@ -105,12 +116,7 @@ int is_logout(char * input)
 	return strcmp(copy, "logoff") == 0;
 }
 
-char * leading_wspace(char * s)
-{
-	while(*s == ' ')
-		s++;
-	return s;
-}
+
 
 int main(int argc, char argv[])
 {
