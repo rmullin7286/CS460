@@ -12,6 +12,6 @@ int main(int argc, char * argv[])
 
 	while(read(0, buffer, 1024))
 		prints(buffer);
-
+	
 	return 0;
 }

@@ -35,7 +35,7 @@ typedef struct ext2_dir_entry_2 {
 	char	name[255];      	/* File name */
 } DIR;
 
-typedef struct stat {
+typedef struct _stat {
   u16    st_dev;		/* major/minor device number */
   u16    st_ino;		/* i-node number */
   u16    st_mode;		/* file mode, protection bits, etc. */

@@ -16,7 +16,7 @@ void toupper(char * c)
 
 int main(int argc, char * argv[])
 {
-	if(argc == 2)
+	if(argc == 3)
 	{
 		close(0);
 		open(argv[1], O_RDONLY);

@@ -263,7 +263,7 @@ int getcwd(char *cwdname)
    return syscall(28, cwdname, 0);
 }
 
-int stat(char *filename, struct stat *sPtr)
+int stat(char *filename, struct _stat *sPtr)
 {   
    return syscall(29, filename, sPtr);
 }
@@ -583,4 +583,8 @@ char * strtok(char * s, char delim)
 	}
 }
 
-
+char * mystrncpy(char * dest, char * source, int n)
+{
+	for(int i = 0; i < n; i++)
+		dest[i] = source[i];
+}

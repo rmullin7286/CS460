@@ -126,6 +126,8 @@ int main(int argc, char argv[])
 	{
 		printf("> ");
 		gets(input);
+		if(strlen(input) == 0)
+			continue;
 
 		piped_commands[0] = strtok(input, '|');
 
