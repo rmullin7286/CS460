@@ -33,13 +33,11 @@ int main(int argc, char * argv[])
 				n = 20;
 				break;
 			}
-			else if(c == '\r')
+			else
 			{
 				n = 1;
 				break;
 			}
 		}
-	}
-
-	
+	}	
 }
