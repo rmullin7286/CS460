@@ -34,28 +34,38 @@ void ls_file(char * filename)
 	prints("\n");
 }
 
+void ls_dir(char * filename)
+{
+	int dir = open(filename, O_RDONLY);
+	read(dir, buffer, 1024);
+	char * cp = buffer;
+	DIR * dp = (DIR*) buffer;
+	while(cp < 1024 + buffer)
+	{
+		mystrncpy(temp, dp->name, dp->name_len);
+		temp[dp->name_len] = '\0';
+		ls_file(temp);
+		cp += dp->rec_len;
+		dp = (DIR*)cp;	
+	}
+}
+
 int main(int argc, char * argv[])
 {
 	getcwd(cwd);
 	if(argc < 2)
 	{
-		int dir = open(cwd, O_RDONLY);
-		read(dir, buffer, 1024);
-		char * cp = buffer;
-		DIR * dp = (DIR*) buffer;
-		while(cp < 1024 + buffer)
-		{
-		    mystrncpy(temp, dp->name, dp->name_len);
-			temp[dp->name_len] = '\0';
-			ls_file(temp);
-			cp += dp->rec_len;
-			dp = (DIR*)cp;	
-		}
+		ls_dir(cwd);
 	}
 
 	else
 	{
-		prints(argv[1]);
+		STAT s;
+		stat(argv[1], &s);
+		if(S_ISDIR(s.st_mode))
+			ls_dir(argv[1]);
+		else
+			ls_file(argv[1]);
 	}
 
 	return 0;
